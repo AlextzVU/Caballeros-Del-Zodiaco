@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caballeros del Zodiaco | Saint Seiya</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@700&display=swap');
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #0f172a;
+            color: #e2e8f0;
+        }
+        
+        .title-font {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .knight-card {
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid #334155;
+        }
+        
+        .knight-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(14, 165, 233, 0.3);
+            border-color: #38bdf8;
+        }
+        
+        .constellation-bg {
+            position: absolute;
+            opacity: 0.1;
+            z-index: 0;
+        }
+        
+        .gold-text {
+            background: linear-gradient(to right, #fde047, #f59e0b, #f97316);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .bronze-text {
+            background: linear-gradient(to right, #cd7f32, #b87333, #a67c52);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .silver-text {
+            background: linear-gradient(to right, #c0c0c0, #a8a8a8, #909090);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -38px;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #38bdf8;
+            border: 3px solid #0ea5e9;
+        }
+        
+        .timeline {
+            border-left: 3px solid #38bdf8;
+        }
+        
+        .cosmo-effect {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cosmo-effect::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.1) 0%, rgba(56, 189, 248, 0) 70%);
+            animation: rotate 15s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .attack-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+        }
+        
+        .modal {
+            transition: all 0.3s ease;
+        }
+        
+        .modal-enter {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        
+        .modal-enter-active {
+            opacity: 1;
+            transform: scale(1);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Header -->
+    <header class="cosmo-effect bg-gradient-to-b from-blue-900/80 to-slate-900/50 py-6 relative overflow-hidden">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center mb-4 md:mb-0"><!--
+                    <img src="https://i.imgur.com/3ZQ9Q9M.png" alt="Logo Saint Seiya" class="h-16 mr-4">-->
+                    <img src="img/Seiya.jpg" alt="Logo Saint Seiya" class="h-16 mr-4">
+                    <h1 class="title-font text-3xl md:text-4xl font-bold text-white">
+                        <span class="gold-text">Saint</span> <span class="text-blue-300">Seiya</span>
+                    </h1>
+                </div>
+                <nav class="flex space-x-1 md:space-x-4">
+                    <a href="#historia" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-900/50 transition duration-300">Historia</a>
+                    <a href="#caballeros" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-900/50 transition duration-300">Caballeros</a>
+                    <a href="#universo" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-900/50 transition duration-300">Universo</a>
+                    <a href="#galeria" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-900/50 transition duration-300">Galería</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden py-20 bg-gradient-to-b from-slate-900 to-blue-900/30">
+        <img src="img/losdorados.jpg" alt="Constelaciones" class="constellation-bg w-full h-full object-cover top-0 left-0">
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <h2 class="title-font text-4xl md:text-6xl font-bold mb-6 leading-tight">
+                        <span class="gold-text">Los Caballeros</span> <br>
+                        <span class="text-blue-300">del Zodiaco</span>
+                    </h2>
+                    <p class="text-lg mb-8 text-gray-300">
+                        La épica saga de los guerreros que protegen a la diosa Atenea y luchan por la justicia en el universo mitológico de Masami Kurumada.
+                    </p>
+                    <div class="flex space-x-4">
+                        <button onclick="showTrailer()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-md font-medium transition duration-300 flex items-center">
+                            <i class="fas fa-play mr-2"></i> Ver Tráiler
+                        </button>
+                        <a href="#historia" class="border border-blue-400 text-blue-300 hover:bg-blue-900/30 px-6 py-3 rounded-md font-medium transition duration-300">
+                            Explorar
+                        </a>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <img src="img/caballerosdebronce.png" alt="Caballeros de Bronce" class="w-full max-w-lg animate-float" style="animation: float 6s ease-in-out infinite;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Historia Section -->
+    <section id="historia" class="py-16 bg-slate-900/50">
+        <div class="container mx-auto px-4">
+            <h2 class="title-font text-3xl md:text-4xl font-bold mb-12 text-center text-blue-300">
+                <span class="gold-text">La Historia</span> de Saint Seiya
+            </h2>
+            
+            <div class="relative timeline max-w-3xl mx-auto pl-12 space-y-8">
+                <div class="timeline-item relative pl-6">
+                    <h3 class="text-xl font-bold text-blue-300 mb-2">1986 - Nace la leyenda</h3>
+                    <p class="text-gray-300">Masami Kurumada crea el manga "Saint Seiya" (Los Caballeros del Zodiaco), publicado en la revista Shōnen Jump de Weekly Shōnen Jump.</p>
+                </div>
+                
+                <div class="timeline-item relative pl-6">
+                    <h3 class="text-xl font-bold text-blue-300 mb-2">Saga del Santuario</h3>
+                    <p class="text-gray-300">Seiya y los Caballeros de Bronce luchan contra los Caballeros de Plata y luego contra los Caballeros de Oro para salvar a Atenea.</p>
+                </div>
+                
+                <div class="timeline-item relative pl-6">
+                    <h3 class="text-xl font-bold text-blue-300 mb-2">Saga de Poseidón</h3>
+                    <p class="text-gray-300">Los Caballeros enfrentan al dios de los mares Poseidón y sus Generales Marinas para evitar que inunde el mundo.</p>
+                </div>
+                
+                <div class="timeline-item relative pl-6">
+                    <h3 class="text-xl font-bold text-blue-300 mb-2">Saga de Hades</h3>
+                    <p class="text-gray-300">El conflicto final contra Hades, dios del Inframundo, donde incluso los Caballeros de Oro se sacrifican por la victoria.</p>
+                </div>
+                
+                <div class="timeline-item relative pl-6">
+                    <h3 class="text-xl font-bold text-blue-300 mb-2">Legado continuo</h3>
+                    <p class="text-gray-300">Con spin-offs, secuelas, películas y remasterizaciones, la franquicia sigue viva más de 35 años después.</p>
+                </div>
+            </div>
+            
+            <div class="mt-16 max-w-4xl mx-auto bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                <h3 class="text-2xl font-bold text-blue-300 mb-4">El Mito de Atenea</h3>
+                <p class="text-gray-300 mb-4">
+                    En la mitología de Saint Seiya, cada 250 años renace la diosa Atenea para proteger a la humanidad de otros dioses que quieren dominarla. 
+                    Los Santos (Caballeros) son guerreros que juran lealtad a Atenea, vistiendo armaduras (Cloths) inspiradas en constelaciones.
+                </p>
+                <p class="text-gray-300">
+                    El Cosmo es la energía vital del universo que los Caballeros dominan para alcanzar velocidades y fuerzas sobrehumanas, 
+                    llegando incluso a mover sus puños a la velocidad de la luz en los niveles más altos.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Caballeros Section -->
+    <section id="caballeros" class="py-16 bg-gradient-to-b from-slate-900/50 to-blue-900/20">
+        <div class="container mx-auto px-4">
+            <h2 class="title-font text-3xl md:text-4xl font-bold mb-12 text-center">
+                <span class="gold-text">Los Caballeros</span> <span class="text-blue-300">Protagonistas</span>
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Seiya -->
+                <div class="knight-card rounded-xl overflow-hidden shadow-lg">
+                    <div class="relative h-64 bg-gradient-to-b from-red-900/30 to-red-900/10">
+                        <img src="img/PegasoConstelacion2.png" alt="Constelación Pegaso" class="constellation-bg opacity-20">
+                        <img src="img/pegaso.jpg" alt="Seiya de Pegaso" class="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-64">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-2xl font-bold bronze-text">Seiya</h3>
+                            <span class="bg-amber-800 text-amber-100 text-xs px-2 py-1 rounded">Bronce</span>
+                        </div>
+                        <p class="text-gray-300 text-sm mb-4">Caballero de Pegaso. Protagonista principal, entrenado en el Santuario de Grecia.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-blue-300">Constelación: Pegaso</span>
+                            <button onclick="openModal('seiya')" class="text-blue-400 hover:text-blue-300 text-sm font-medium">Ver más</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Shiryu -->
+                <div class="knight-card rounded-xl overflow-hidden shadow-lg">
+                    <div class="relative h-64 bg-gradient-to-b from-green-900/30 to-green-900/10">
+                        <img src="img/cosntelaciondragon.jpg" alt="Constelación Dragón" class="constellation-bg opacity-20">
+                        <img src="img/Shiryu.png" alt="Shiryu de Dragón" class="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-64">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-2xl font-bold bronze-text">Shiryu</h3>
+                            <span class="bg-amber-800 text-amber-100 text-xs px-2 py-1 rounded">Bronce</span>
+                        </div>
+                        <p class="text-gray-300 text-sm mb-4">Caballero de Dragón. Entrenado en las Cinco Montañas Viejas de China, el más sabio del grupo.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-blue-300">Constelación: Dragón</span>
+                            <button onclick="openModal('shiryu')" class="text-blue-400 hover:text-blue-300 text-sm font-medium">Ver más</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Hyoga -->
+                <div class="knight-card rounded-xl overflow-hidden shadow-lg">
+                    <div class="relative h-64 bg-gradient-to-b from-cyan-900/30 to-cyan-900/10">
+                        <img src="img/cosntelacioncisne.jpg" alt="Constelación Cisne" class="constellation-bg opacity-20">
+                        <img src="img/Hyoga.png" alt="Hyoga de Cisne" class="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-64">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-2xl font-bold bronze-text">Hyoga</h3>
+                            <span class="bg-amber-800 text-amber-100 text-xs px-2 py-1 rounded">Bronce</span>
+                        </div>
+                        <p class="text-gray-300 text-sm mb-4">Caballero de Cisne. Entrenado en Siberia, domina el frío extremo con sus técnicas.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-blue-300">Constelación: Cisne</span>
+                            <button onclick="openModal('hyoga')" class="text-blue-400 hover:text-blue-300 text-sm font-medium">Ver más</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Shun -->
+                <div class="knight-card rounded-xl overflow-hidden shadow-lg">
+                    <div class="relative h-64 bg-gradient-to-b from-purple-900/30 to-purple-900/10">
+                        <img src="img/andromeda.png" alt="Constelación Andrómeda" class="constellation-bg opacity-20">
+                        <img src="img/Shun.jpg" alt="Shun de Andrómeda" class="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-64">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-2xl font-bold bronze-text">Shun</h3>
+                            <span class="bg-amber-800 text-amber-100 text-xs px-2 py-1 rounded">Bronce</span>
+                        </div>
+                        <p class="text-gray-300 text-sm mb-4">Caballero de Andrómeda. De carácter pacífico pero con un poder oculto enorme.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-blue-300">Constelación: Andrómeda</span>
+                            <button onclick="openModal('shun')" class="text-blue-400 hover:text-blue-300 text-sm font-medium">Ver más</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Ikki -->
+                <div class="knight-card rounded-xl overflow-hidden shadow-lg">
+                    <div class="relative h-64 bg-gradient-to-b from-red-900/30 to-red-900/10">
+                        <img src="img/FenixConstelacion.jpg" alt="Constelación Fénix" class="constellation-bg opacity-20">
+                        <img src="img/ikki.jpg" alt="Ikki de Fénix" class="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-64">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-2xl font-bold bronze-text">Ikki</h3>
+                            <span class="bg-amber-800 text-amber-100 text-xs px-2 py-1 rounded">Bronce</span>
+                        </div>
+                        <p class="text-gray-300 text-sm mb-4">Caballero de Fénix. Hermano mayor de Shun, el más poderoso de los Caballeros de Bronce.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-blue-300">Constelación: Fénix</span>
+                            <button onclick="openModal('ikki')" class="text-blue-400 hover:text-blue-300 text-sm font-medium">Ver más</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Saga de Géminis -->
+                <div class="knight-card rounded-xl overflow-hidden shadow-lg">
+                    <div class="relative h-64 bg-gradient-to-b from-yellow-600/30 to-yellow-600/10">
+                        <img src="img/constelaciondeGeminis.jpg" alt="Constelación Géminis" class="constellation-bg opacity-20">
+                        <img src="img/saga.jpg" alt="Saga de Géminis" class="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-64">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-2xl font-bold gold-text">Saga</h3>
+                            <span class="bg-amber-600 text-amber-100 text-xs px-2 py-1 rounded">Oro</span>
+                        </div>
+                        <p class="text-gray-300 text-sm mb-4">Caballero de Géminis. Uno de los más poderosos Caballeros Dorados con una personalidad dividida.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-blue-300">Constelación: Géminis</span>
+                            <button onclick="openModal('saga')" class="text-blue-400 hover:text-blue-300 text-sm font-medium">Ver más</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center">
+                <button onclick="showAllKnights()" class="border border-blue-400 text-blue-300 hover:bg-blue-900/30 px-6 py-3 rounded-md font-medium transition duration-300">
+                    Ver todos los Caballeros
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Universo Section -->
+    <section id="universo" class="py-16 bg-slate-900/50">
+        <div class="container mx-auto px-4">
+            <h2 class="title-font text-3xl md:text-4xl font-bold mb-12 text-center text-blue-300">
+                El <span class="gold-text">Universo</span> de Saint Seiya
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <div class="text-yellow-400 text-4xl mb-4">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-blue-300 mb-2">Caballeros de Oro</h3>
+                    <p class="text-gray-300 text-sm">
+                        Los 12 Caballeros más poderosos, protectores de las 12 casas del Zodiaco en el Santuario. Cada uno representa una constelación zodiacal.
+                    </p>
+                </div>
+                
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <div class="text-gray-300 text-4xl mb-4">
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-blue-300 mb-2">Caballeros de Plata</h3>
+                    <p class="text-gray-300 text-sm">
+                        Guerreros de rango medio, más fuertes que los de Bronce pero inferiores a los de Oro. Tienen constelaciones menores como Lira o Perseo.
+                    </p>
+                </div>
+                
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <div class="text-amber-700 text-4xl mb-4">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-blue-300 mb-2">Caballeros de Bronce</h3>
+                    <p class="text-gray-300 text-sm">
+                        Los Santos de menor rango pero con mayor potencial. Los protagonistas pertenecen a este grupo, superando a guerreros de mayor jerarquía.
+                    </p>
+                </div>
+            </div>
+            
+            <h3 class="text-2xl font-bold text-blue-300 mb-6 text-center">Técnicas Legendarias</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="attack-card rounded-lg p-5 border border-slate-700">
+                    <h4 class="font-bold text-lg bronze-text mb-2">Meteoro de Pegaso</h4>
+                    <p class="text-gray-300 text-sm">Seiya lanza cientos de puñetazos a velocidad cósmica, creando la ilusión de un meteoro.</p>
+                </div>
+                
+                <div class="attack-card rounded-lg p-5 border border-slate-700">
+                    <h4 class="font-bold text-lg bronze-text mb-2">Colera del Dragón</h4>
+                    <p class="text-gray-300 text-sm">Shiryu concentra todo su cosmos en un único puñetazo destructivo.</p>
+                </div>
+                
+                <div class="attack-card rounded-lg p-5 border border-slate-700">
+                    <h4 class="font-bold text-lg bronze-text mb-2">Polvo de Diamante</h4>
+                    <p class="text-gray-300 text-sm">Hyoga congela a su oponente con un aire extremadamente frío.</p>
+                </div>
+                
+                <div class="attack-card rounded-lg p-5 border border-slate-700">
+                    <h4 class="font-bold text-lg gold-text mb-2">Otra Dimensión</h4>
+                    <p class="text-gray-300 text-sm">Saga (Géminis) abre un portal dimensional que envía al enemigo a otro universo.</p>
+                </div>
+            </div>
+            
+            <div class="mt-12 bg-slate-800/70 rounded-xl p-6 border border-blue-900/50">
+                <h3 class="text-2xl font-bold text-center gold-text mb-4">El Séptimo Sentido</h3>
+                <p class="text-gray-300 text-center max-w-3xl mx-auto">
+                    Más allá de los cinco sentidos físicos y el sexto sentido (la intuición), los Caballeros pueden despertar el Séptimo Sentido, 
+                    que les permite manipular el Cosmo a niveles divinos, alcanzando la velocidad de la luz y superando sus límites humanos.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Galería Section -->
+    <section id="galeria" class="py-16 bg-gradient-to-b from-blue-900/20 to-slate-900">
+        <div class="container mx-auto px-4">
+            <h2 class="title-font text-3xl md:text-4xl font-bold mb-12 text-center">
+                <span class="gold-text">Galería</span> <span class="text-blue-300">de Imágenes</span>
+            </h2>
+            
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div class="gallery-item overflow-hidden rounded-lg cursor-pointer transform hover:scale-105 transition duration-300">
+                    <img src="img/CABALLEROSDEBRONCE.jpg" alt="Caballeros de Bronce" class="w-full h-48 object-cover">
+                </div>
+                <div class="gallery-item overflow-hidden rounded-lg cursor-pointer transform hover:scale-105 transition duration-300">
+                    <img src="img/CABALLEROSDORADOS.jpg" alt="Caballeros de Oro" class="w-full h-48 object-cover">
+                </div>
+                <div class="gallery-item overflow-hidden rounded-lg cursor-pointer transform hover:scale-105 transition duration-300">
+                    <img src="img/santuario.png" alt="Santuario" class="w-full h-48 object-cover">
+                </div>
+                <div class="gallery-item overflow-hidden rounded-lg cursor-pointer transform hover:scale-105 transition duration-300">
+                    <img src="img/Athena.jpg" alt="Atenea" class="w-full h-48 object-cover">
+                </div>
+                <div class="gallery-item overflow-hidden rounded-lg cursor-pointer transform hover:scale-105 transition duration-300">
+                    <img src="img/Pegaso_Seiya.jpeg" alt="Pegaso Seiya" class="w-full h-48 object-cover">
+                </div>
+                <div class="gallery-item overflow-hidden rounded-lg cursor-pointer transform hover:scale-105 transition duration-300">
+                    <img src="img/Dragón_Shiryu.jpg" alt="Dragón Shiryu" class="w-full h-48 object-cover">
+                </div>
+                <div class="gallery-item overflow-hidden rounded-lg cursor-pointer transform hover:scale-105 transition duration-300">
+                    <img src="img/Cisne_Hyoga.jpeg" alt="Cisne Hyoga" class="w-full h-48 object-cover">
+                </div>
+                <div class="gallery-item overflow-hidden rounded-lg cursor-pointer transform hover:scale-105 transition duration-300">
+                    <img src="img/Andrómeda_Shun.png" alt="Andrómeda Shun" class="w-full h-48 object-cover">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 py-8 border-t border-slate-800">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <h2 class="title-font text-xl font-bold text-white">
+                        <span class="gold-text">Saint</span> <span class="text-blue-300">Seiya</span>
+                    </h2>
+                    <p class="text-gray-400 text-sm mt-1">© 2023 Todos los derechos reservados</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-blue-300 transition duration-300">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-blue-300 transition duration-300">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-blue-300 transition duration-300">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-blue-300 transition duration-300">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="mt-8 pt-6 border-t border-slate-800 text-center text-gray-400 text-sm">
+                <p>Saint Seiya es una obra creada por Masami Kurumada. Este sitio es un tributo sin fines de lucro, solo es para el aprendizaje del desarrollo de painas web 
+                    (Imagenes encontradas de Google).</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal -->
+    <div id="modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 hidden">
+        <div class="bg-slate-800 rounded-xl max-w-2xl w-full mx-4 relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+            <div class="p-6">
+                <div id="modal-content">
+                    <!-- Content will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trailer Modal -->
+    <div id="trailer-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 hidden">
+        <div class="bg-slate-800 rounded-xl max-w-4xl w-full mx-4 relative">
+            <button onclick="closeTrailer()" class="absolute top-4 right-4 text-gray-400 hover:text-white z-10">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+            <div class="aspect-w-16 aspect-h-9">
+                <iframe id="trailer-video" class="w-full h-96 rounded-t-xl" src="" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="p-6">
+                <h3 class="text-2xl font-bold text-blue-300 mb-2">Saint Seiya: Tráiler Oficial</h3>
+                <p class="text-gray-300">Revive la emoción de los Caballeros del Zodiaco con este tráiler legendario.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal functions
+        function openModal(knight) {
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modal-content');
+            
+            // Sample content - in a real app you would fetch this data
+            let content = '';
+            
+            switch(knight) {
+                case 'seiya':
+                    content = `
+                        <div class="flex flex-col md:flex-row gap-6">
+                            <div class="md:w-1/3 bg-slate-700/50 rounded-lg p-4 flex justify-center">
+                                <img src="img/Seiya_3.png" alt="Seiya" class="h-64">
+                            </div>
+                            <div class="md:w-2/3">
+                                <h3 class="text-3xl font-bold bronze-text mb-2">Seiya de Pegaso</h3>
+                                <div class="flex items-center mb-4">
+                                    <span class="bg-amber-800 text-amber-100 text-xs px-2 py-1 rounded mr-3">Bronce</span>
+                                    <span class="text-sm text-blue-300">Constelación: Pegaso</span>
+                                </div>
+                                <p class="text-gray-300 mb-4">
+                                    Seiya es el protagonista principal de la serie. Fue enviado a Grecia para entrenar como Santo y recibió la Armadura de Pegaso. 
+                                    Es conocido por su perseverancia y su técnica característica: el "Meteoro de Pegaso".
+                                </p>
+                                <h4 class="text-xl font-bold text-blue-300 mb-2">Técnicas Principales</h4>
+                                <ul class="text-gray-300 space-y-2 mb-4">
+                                    <li class="flex items-start">
+                                        <span class="text-yellow-400 mr-2">•</span>
+                                        <span><strong class="text-amber-200">Meteoro de Pegaso:</strong> Cientos de puñetazos a velocidad cósmica</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="text-yellow-400 mr-2">•</span>
+                                        <span><strong class="text-amber-200">Cometa de Pegaso:</strong> Versión mejorada del Meteoro</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="text-yellow-400 mr-2">•</span>
+                                        <span><strong class="text-amber-200">Pegaso Fantasma:</strong> Ilusión de múltiples ataques simultáneos</span>
+                                    </li>
+                                </ul>
+                                <p class="text-gray-300 text-sm">
+                                    <strong>Dato curioso:</strong> Seiya es el único Caballero que ha derrotado a varios Caballeros de Oro en combate.
+                                </p>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'shiryu':
+                    content = `
+                        <div class="flex flex-col md:flex-row gap-6">
+                            <div class="md:w-1/3 bg-slate-700/50 rounded-lg p-4 flex justify-center">
+                                <img src="img/Shiryu_de_Dragón_1.jpg" alt="Shiryu" class="h-64">
+                            </div>
+                            <div class="md:w-2/3">
+                                <h3 class="text-3xl font-bold bronze-text mb-2">Shiryu de Dragón</h3>
+                                <div class="flex items-center mb-4">
+                                    <span class="bg-amber-800 text-amber-100 text-xs px-2 py-1 rounded mr-3">Bronce</span>
+                                    <span class="text-sm text-blue-300">Constelación: Dragón</span>
+                                </div>
+                                <p class="text-gray-300 mb-4">
+                                    Shiryu fue entrenado por el Maestro Anciano en las Cinco Montañas Viejas de China. 
+                                    Es el más sabio y sereno de los Caballeros de Bronce, y su técnica más poderosa es la "Cólera del Dragón".
+                                </p>
+                                <h4 class="text-xl font-bold text-blue-300 mb-2">Técnicas Principales</h4>
+                                <ul class="text-gray-300 space-y-2 mb-4">
+                                    <li class="flex items-start">
+                                        <span class="text-yellow-400 mr-2">•</span>
+                                        <span><strong class="text-amber-200">Cólera del Dragón:</strong> Concentra todo su cosmos en un puñetazo</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="text-yellow-400 mr-2">•</span>
+                                        <span><strong class="text-amber-200">Escudo del Dragón:</strong> Defensa impenetrable</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="text-yellow-400 mr-2">•</span>
+                                        <span><strong class="text-amber-200">Dragón Volador:</strong> Ataque aéreo devastador</span>
+                                    </li>
+                                </ul>
+                                <p class="text-gray-300 text-sm">
+                                    <strong>Dato curioso:</strong> Shiryu suele sacrificar su vista en combate para aumentar su poder.
+                                </p>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                    
+                // Add cases for other knights...
+                case 'hyoga':
+    content = `
+        <div class="flex flex-col md:flex-row gap-6">
+            <div class="md:w-1/3 bg-slate-700/50 rounded-lg p-4 flex justify-center">
+                <img src="img/HyogadeCisne_1.jpg" alt="Hyoga" class="h-64">
+            </div>
+            <div class="md:w-2/3">
+                <h3 class="text-3xl font-bold bronze-text mb-2">Hyoga de Cisne</h3>
+                <div class="flex items-center mb-4">
+                    <span class="bg-amber-800 text-amber-100 text-xs px-2 py-1 rounded mr-3">Bronce</span>
+                    <span class="text-sm text-blue-300">Constelación: Cisne</span>
+                </div>
+                <p class="text-gray-300 mb-4">
+                    Hyoga fue entrenado en las frías tierras de Siberia por el Caballero de Cristal. Es sereno y fuerte, con una profunda conexión emocional hacia su madre fallecida. Domina el hielo con su cosmos, congelando a sus enemigos con precisión letal.
+                </p>
+                <h4 class="text-xl font-bold text-blue-300 mb-2">Técnicas Principales</h4>
+                <ul class="text-gray-300 space-y-2 mb-4">
+                    <li class="flex items-start">
+                        <span class="text-yellow-400 mr-2">•</span>
+                        <span><strong class="text-amber-200">Polvo de Diamante:</strong> Lanza una ráfaga gélida capaz de congelar al oponente instantáneamente</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-yellow-400 mr-2">•</span>
+                        <span><strong class="text-amber-200">Ataque del Cielo Helado:</strong> Proyecta energía congelante desde el cielo para envolver al enemigo</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-yellow-400 mr-2">•</span>
+                        <span><strong class="text-amber-200">Ejecución de Aurora:</strong> Su técnica suprema, invoca el poder del Ártico para derrotar a enemigos poderosos</span>
+                    </li>
+                </ul>
+                <p class="text-gray-300 text-sm">
+                    <strong>Dato curioso:</strong> Aunque lucha con determinación, Hyoga guarda un profundo respeto por la vida y sus emociones lo conectan con el lado más humano del cosmos.
+                </p>
+            </div>
+        </div>
+    `;
+    break;
+case 'shun':
+    content = `
+        <div class="flex flex-col md:flex-row gap-6">
+            <div class="md:w-1/3 bg-slate-700/50 rounded-lg p-4 flex justify-center">
+                <img src="img/Shun_de_Andromeda_1.jpg" alt="Shun" class="h-64">
+            </div>
+            <div class="md:w-2/3">
+                <h3 class="text-3xl font-bold bronze-text mb-2">Shun de Andrómeda</h3>
+                <div class="flex items-center mb-4">
+                    <span class="bg-amber-800 text-amber-100 text-xs px-2 py-1 rounded mr-3">Bronce</span>
+                    <span class="text-sm text-blue-300">Constelación: Andrómeda</span>
+                </div>
+                <p class="text-gray-300 mb-4">
+                    Shun fue entrenado en la Isla de Andrómeda por Daidalos de Cefeo. Es compasivo, sensible y rechaza la violencia a menos que sea absolutamente necesaria. Su cadena de Andrómeda le otorga tanto defensa como poder ofensivo, convirtiéndolo en un luchador versátil con un gran dominio del cosmos.
+                </p>
+                <h4 class="text-xl font-bold text-blue-300 mb-2">Técnicas Principales</h4>
+                <ul class="text-gray-300 space-y-2 mb-4">
+                    <li class="flex items-start">
+                        <span class="text-yellow-400 mr-2">•</span>
+                        <span><strong class="text-amber-200">Cadena Nebular:</strong> Usa su cadena para atacar y defender con movimientos impredecibles</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-yellow-400 mr-2">•</span>
+                        <span><strong class="text-amber-200">Tormenta Nebular:</strong> Técnica devastadora que solo usa en situaciones extremas</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-yellow-400 mr-2">•</span>
+                        <span><strong class="text-amber-200">Trampa Circular:</strong> Encierra al enemigo en una espiral defensiva y ofensiva al mismo tiempo</span>
+                    </li>
+                </ul>
+                <p class="text-gray-300 text-sm">
+                    <strong>Dato curioso:</strong> Shun es el hermano menor de Ikki del Fénix, y a pesar de su naturaleza pacifista, es uno de los Caballeros más poderosos y con mayor potencial del grupo.
+                </p>
+            </div>
+        </div>
+    `;
+    break;
+    case 'ikki':
+    content = `
+        <div class="flex flex-col md:flex-row gap-6">
+            <div class="md:w-1/3 bg-slate-700/50 rounded-lg p-4 flex justify-center">
+                <img src="img/Ikki_de_Fenix_1.jpeg" alt="Ikki" class="h-64">
+            </div>
+            <div class="md:w-2/3">
+                <h3 class="text-3xl font-bold bronze-text mb-2">Ikki de Fénix</h3>
+                <div class="flex items-center mb-4">
+                    <span class="bg-amber-800 text-amber-100 text-xs px-2 py-1 rounded mr-3">Bronce</span>
+                    <span class="text-sm text-blue-300">Constelación: Fénix</span>
+                </div>
+                <p class="text-gray-300 mb-4">
+                    Ikki fue entrenado en la Isla de la Reina Muerte, el lugar más cruel entre los campos de entrenamiento. Es el más solitario y poderoso de los Caballeros de Bronce. Aunque distante, tiene un fuerte sentido de justicia y un inmenso amor por su hermano Shun. Su armadura resurge como el ave fénix, incluso después de ser destruida.
+                </p>
+                <h4 class="text-xl font-bold text-blue-300 mb-2">Técnicas Principales</h4>
+                <ul class="text-gray-300 space-y-2 mb-4">
+                    <li class="flex items-start">
+                        <span class="text-yellow-400 mr-2">•</span>
+                        <span><strong class="text-amber-200">Ave Fénix:</strong> Su técnica más icónica, ataca con el fuego regenerador del Fénix</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-yellow-400 mr-2">•</span>
+                        <span><strong class="text-amber-200">Ilusión Diabólica del Fénix:</strong> Somete al oponente a una pesadilla mental que puede destruir su voluntad</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-yellow-400 mr-2">•</span>
+                        <span><strong class="text-amber-200">Vuelo del Fénix:</strong> Un poderoso embate acompañado de fuego cósmico que arremete con velocidad letal</span>
+                    </li>
+                </ul>
+                <p class="text-gray-300 text-sm">
+                    <strong>Dato curioso:</strong> La armadura del Fénix es la única entre los Caballeros de Bronce que puede regenerarse por sí sola, al igual que Ikki, quien renace una y otra vez para proteger a los suyos.
+                </p>
+            </div>
+        </div>
+    `;
+    break;
+    case 'saga':
+    content = `
+        <div class="flex flex-col md:flex-row gap-6">
+            <div class="md:w-1/3 bg-slate-700/50 rounded-lg p-4 flex justify-center">
+                <img src="img/Saga_de_Geminis_1.jpg" alt="Saga" class="h-64">
+            </div>
+            <div class="md:w-2/3">
+                <h3 class="text-3xl font-bold bronze-text mb-2">Saga de Géminis</h3>
+                <div class="flex items-center mb-4">
+                    <span class="bg-yellow-600 text-yellow-100 text-xs px-2 py-1 rounded mr-3">Oro</span>
+                    <span class="text-sm text-blue-300">Constelación: Géminis</span>
+                </div>
+                <p class="text-gray-300 mb-4">
+                    Saga es uno de los Caballeros de Oro más poderosos y complejos del Santuario. Su personalidad está dividida entre el bien y el mal, lo que lo ha llevado a cometer actos oscuros incluso contra la propia Atenea. No obstante, cuando su lado bueno prevalece, es un defensor inquebrantable de la justicia y el equilibrio.
+                </p>
+                <h4 class="text-xl font-bold text-blue-300 mb-2">Técnicas Principales</h4>
+                <ul class="text-gray-300 space-y-2 mb-4">
+                    <li class="flex items-start">
+                        <span class="text-yellow-400 mr-2">•</span>
+                        <span><strong class="text-amber-200">Otra Dimensión:</strong> Envía al enemigo a un universo paralelo del cual es casi imposible escapar</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-yellow-400 mr-2">•</span>
+                        <span><strong class="text-amber-200">Explosión Galáctica:</strong> Una descarga de cosmos devastadora que puede destruir todo a su alrededor</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-yellow-400 mr-2">•</span>
+                        <span><strong class="text-amber-200">Satán Imperial:</strong> Técnica de control mental con la que manipula la voluntad del adversario</span>
+                    </li>
+                </ul>
+                <p class="text-gray-300 text-sm">
+                    <strong>Dato curioso:</strong> A pesar de sus acciones como antagonista, muchos lo consideran una de las figuras más trágicas y poderosas del universo de Saint Seiya.
+                </p>
+            </div>
+        </div>
+    `;
+    break;
+
+
+
+
+                
+                default:
+                    content = `<p class="text-gray-300">Información no disponible.</p>`;
+            }
+            
+            modalContent.innerHTML = content;
+            modal.classList.remove('hidden');
+        }
+        
+        function closeModal() {
+            document.getElementById('modal').classList.add('hidden');
+        }
+        
+        // Trailer functions
+        function showTrailer() {
+            const trailerModal = document.getElementById('trailer-modal');
+            const trailerVideo = document.getElementById('trailer-video');
+            
+            // In a real app, this would be the official trailer URL
+            //trailerVideo.src = "https://youtu.be/YNsO3J6-7RI?si=RxUPBuUUwgwG2Dj9?autoplay=1";
+            trailerVideo.src ="https://youtu.be/HtCJHaF2EGY?si=7Xn-T4ZMWKbdQplv?autoplay=1";
+            trailerModal.classList.remove('hidden');
+        }
+        
+        function closeTrailer() {
+            const trailerModal = document.getElementById('trailer-modal');
+            const trailerVideo = document.getElementById('trailer-video');
+            
+            trailerVideo.src = "https://youtu.be/HtCJHaF2EGY?si=7Xn-T4ZMWKbdQplv?autoplay=1";
+            trailerModal.classList.add('hidden');
+        }
+        
+        // Show all knights (sample function)
+        function showAllKnights() {
+            alert("Esta es unapagina de prueba. En una aplicación real, esto mostraría una página con todos los Caballeros del Zodiaco.");
+        }
+        
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('modal');
+            const trailerModal = document.getElementById('trailer-modal');
+            
+            if (event.target == modal) {
+                closeModal();
+            }
+            
+            if (event.target == trailerModal) {
+                closeTrailer();
+            }
+        }
+    </script>
+</body>
+</html>
